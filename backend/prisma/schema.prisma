@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  role        Role
+  name        String
+  age         Int?
+  bloodGroup  String?
+  address     String
+  phoneNumber String   @unique
+  email       String   @unique
+  patients    Patient[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Organization {
+  id             String   @id @default(uuid())
+  name           String
+  code           String   @unique
+  address        String
+  password       String
+  email          String   @unique
+  numberOfBeds   Int?     
+  oxygenTanks    Int?     
+  icus           Int?     
+  requests       Request[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Patient {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+
+  name        String
+  age         Int?
+  bloodGroup  String?
+  isSelf      Boolean @default(true)
+  address     String
+  phoneNumber String   @unique
+  email       String   @unique
+  requests    Request[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Request {
+  id             String     @id @default(uuid())
+  patient        Patient    @relation(fields: [patientId], references: [id])
+  patientId      String
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+
+  type           RequestType
+  status         RequestStatus @default(PENDING)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+enum Role {
+  CLIENT
+  ORGANIZATION
+}
+
+enum RequestType {
+  ICU
+  OXYGEN
+  BED
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+// may be we can get a medical kit like covaxine
+
