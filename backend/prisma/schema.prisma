@@ -9,11 +9,12 @@ datasource db {
 
 model User {
   id          String   @id @default(uuid())
-  role        Role
+  role        Role   @default(CLIENT)
   name        String
   age         Int?
   bloodGroup  String?
   address     String
+  password    String
   phoneNumber String   @unique
   email       String   @unique
   patients    Patient[]
@@ -23,6 +24,7 @@ model User {
 
 model Organization {
   id             String   @id @default(uuid())
+  role           Role   @default(ORGANIZATION)
   name           String
   code           String   @unique
   address        String
@@ -30,7 +32,7 @@ model Organization {
   email          String   @unique
   numberOfBeds   Int?     
   oxygenTanks    Int?     
-  icus           Int?     
+  icus           Int?      
   requests       Request[]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
@@ -87,4 +89,4 @@ enum RequestStatus {
 }
 
 // may be we can get a medical kit like covaxine
-
+// org specific bot for answering queries
