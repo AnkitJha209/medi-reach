@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
+
 export const prisma = new PrismaClient();
 export const clientSignUp = async (req: Request, res: Response) => {
     try {
