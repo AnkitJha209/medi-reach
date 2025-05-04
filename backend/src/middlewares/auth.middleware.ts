@@ -3,11 +3,11 @@ import jwt from "jsonwebtoken";
 import dotenv from 'dotenv'
 dotenv.config();
 
-export interface authRequest extends Request {
+export interface AuthRequest extends Request {
     user?: jwt.JwtPayload
 }
 
-export const verifyToken = async (req: authRequest, res: Response, next: NextFunction) => {
+export const verifyToken = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const token = req.headers.authorization?.split(' ')[1];
 
